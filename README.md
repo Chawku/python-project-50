@@ -3,4 +3,4 @@
 
 <a href="https://codeclimate.com/github/Chawku/python-project-50/maintainability"><img src="https://api.codeclimate.com/v1/badges/d7b44ef414c006d6dc3e/maintainability" /></a>
 
-[![hexlet-check](https://github.com/Chawku/python-project-50/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Chawku/python-project-50/actions/workflows/hexlet-check.yml)
+<a href="https://codeclimate.com/github/Chawku/python-project-50/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d7b44ef414c006d6dc3e/test_coverage" /></a>
