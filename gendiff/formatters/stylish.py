@@ -30,4 +30,7 @@ def format_value(value, depth):
         nested_indent = '    ' * (depth)
         lines = [f'{nested_indent}{k}: {format_value(v, depth + 1)}' for k, v in value.items()]
         return '{\n' + '\n'.join(lines) + '\n' + nested_indent + '}'
+    if value is None:
+        return 'null'
     return str(value).lower() if isinstance(value, bool) else str(value)
+
