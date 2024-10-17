@@ -1,26 +1,31 @@
-import json
+from gendiff.parser import parse_file
+from gendiff.formatters.selector import select_formatter
 
 
-def read_file(file_path):
-    with open(file_path, 'r') as file:
-        return json.load(file)
+def make_diff(dict1: dict, dict2: dict) -> list:
+    result = []
+    for key in sorted(dict1.keys() | dict2.keys()):
+        child1, child2 = dict1.get(key), dict2.get(key)
+
+        if key not in dict1:
+            result.append({'key': key, 'type': 'added', 'value': child2})
+        elif key not in dict2:
+            result.append({'key': key, 'type': 'removed', 'value': child1})
+        elif isinstance(child1, dict) and isinstance(child2, dict):
+            result.append({'key': key, 'type': 'nested', 'children': make_diff(child1, child2)})
+        elif child1 != child2:
+            result.append({'key': key, 'type': 'changed', 'old_value': child1, 'new_value': child2})
+        else:
+            result.append({'key': key, 'type': 'unchanged', 'value': child1})
+
+    return result
 
 
-def generate_diff(file_path1, file_path2):
-    data1 = read_file(file_path1)
-    data2 = read_file(file_path2)
+def build_diff(dict1: dict, dict2: dict) -> dict:
+    return {'type': 'root', 'children': make_diff(dict1, dict2)}
 
-    all_keys = sorted(set(data1.keys()).union(set(data2.keys())))
 
-    diff = []
-
-    for key in all_keys:
-        if key in data1 and key not in data2:
-            diff.append(f"- {key}: {data1[key]}")
-        elif key in data2 and key not in data1:
-            diff.append(f"+ {key}: {data2[key]}")
-        elif data1[key] != data2[key]:
-            diff.append(f"- {key}: {data1[key]}")
-            diff.append(f"+ {key}: {data2[key]}")
-
-    return "{\n  " + "\n  ".join(diff) + "\n}"
+def generate_diff(file1, file2, format_of_output='stylish'):
+    dict1, dict2 = parse_file(file1), parse_file(file2)
+    diff = build_diff(dict1, dict2)
+    return select_formatter(diff, format_of_output)
