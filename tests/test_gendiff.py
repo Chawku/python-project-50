@@ -46,12 +46,12 @@ def test_generate_diff():
     file2 = os.path.join("tests/fixtures", "file2.json")
 
     expected_stylish_output = """{
-  - follow: False
+  - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
-  + verbose: True
+  + verbose: true
 }"""
 
     assert generate_diff(file1, file2, format_of_output='stylish') == expected_stylish_output

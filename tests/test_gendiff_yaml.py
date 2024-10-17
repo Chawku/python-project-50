@@ -15,12 +15,12 @@ def yaml_file2():
 
 def test_generate_diff_yaml(yaml_file1, yaml_file2):
     expected_stylish_output = """{
-  - follow: False
+  - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
-  + verbose: True
+  + verbose: true
 }"""
 
     assert generate_diff(yaml_file1, yaml_file2, format_of_output='stylish') == expected_stylish_output
