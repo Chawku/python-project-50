@@ -1,42 +1,33 @@
+def format_value(value):
+    if value is True:
+        return 'true'
+    if value is False:
+        return 'false'
+    if value is None:
+        return 'null'
+    if isinstance(value, str):
+        return value
+    if isinstance(value, (int, float)):
+        return str(value)
+    return '[complex value]'
+
+
 def format_diff(diff):
-    def format_line(key, change_type, value1=None, value2=None):
-        if change_type == 'added':
-            return f"Property '{key}' was added with value: {format_value(value2)}"
-        elif change_type == 'removed':
-            return f"Property '{key}' was removed"
-        elif change_type == 'changed':
-            return f"Property '{key}' was updated. From {format_value(value1)} to {format_value(value2)}"
-        return ''
+    def walk(node, path):
+        lines = []
+        for child in node['children']:
+            property_path = f"{path}.{child['key']}" if path else child['key']
+            if child['type'] == 'added':
+                value = format_value(child['value'])
+                lines.append(f"Property '{property_path}' was added with value: {value}")
+            elif child['type'] == 'removed':
+                lines.append(f"Property '{property_path}' was removed")
+            elif child['type'] == 'changed':
+                old_value = format_value(child['old_value'])
+                new_value = format_value(child['new_value'])
+                lines.append(f"Property '{property_path}' was updated. From {old_value} to {new_value}")
+            elif child['type'] == 'nested':
+                lines.append(walk(child, property_path))
+        return '\n'.join(lines)
 
-    def format_value(value):
-        if isinstance(value, dict) or isinstance(value, list):
-            return '[complex value]'
-        return value if value is not None else 'None'
-
-    def format_nested(parent_key, children):
-        result = []
-        for item in children:
-            key = f"{parent_key}.{item['key']}"
-            change_type = item['type']
-            if change_type == 'added':
-                result.append(format_line(key, change_type, value2=item.get('value')))
-            elif change_type == 'removed':
-                result.append(format_line(key, change_type))
-            elif change_type == 'changed':
-                result.append(format_line(key, change_type, value1=item.get('old_value'), value2=item.get('new_value')))
-            elif change_type == 'nested':
-                result.extend(format_nested(key, item['children']))
-        return result
-
-    result = []
-    for item in diff['children']:
-        key = item['key']
-        change_type = item['type']
-        if change_type in ['added', 'removed']:
-            result.append(format_line(key, change_type, value2=item.get('value')))
-        elif change_type == 'changed':
-            result.append(format_line(key, change_type, value1=item.get('old_value'), value2=item.get('new_value')))
-        elif change_type == 'nested':
-            result.extend(format_nested(key, item['children']))
-
-    return '\n'.join(result)
+    return walk(diff, "")

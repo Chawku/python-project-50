@@ -21,9 +21,9 @@ def test_format_diff_plain():
     }
 
     expected_output = (
-        "Property 'common.follow' was added with value: False\n"
+        "Property 'common.follow' was added with value: false\n"
         "Property 'common.setting2' was removed\n"
-        "Property 'common.setting3' was updated. From True to None\n"
+        "Property 'common.setting3' was updated. From true to null\n"
         "Property 'common.setting4' was added with value: blah blah\n"
         "Property 'common.setting5' was added with value: [complex value]\n"
         "Property 'common.setting6.doge.wow' was updated. From  to so much\n"
