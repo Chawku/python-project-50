@@ -1,36 +1,40 @@
-def format_diff(diff, depth=0):
-    indent = '    ' * depth
-    lines = []
+import json
 
-    for item in diff['children']:
-        key = item['key']
-        item_type = item['type']
-        value = item.get('value')
-        old_value = item.get('old_value')
-        new_value = item.get('new_value')
-
-        if item_type == 'added':
-            lines.append(f'{indent}  + {key}: {format_value(value, depth + 1)}')
-        elif item_type == 'removed':
-            lines.append(f'{indent}  - {key}: {format_value(value, depth + 1)}')
-        elif item_type == 'unchanged':
-            lines.append(f'{indent}    {key}: {format_value(value, depth + 1)}')
-        elif item_type == 'changed':
-            lines.append(f'{indent}  - {key}: {format_value(old_value, depth + 1)}')
-            lines.append(f'{indent}  + {key}: {format_value(new_value, depth + 1)}')
-        elif item_type == 'nested':
-            nested_diff = format_diff(item, depth + 1)
-            lines.append(f'{indent}    {key}: {nested_diff}')
-
-    result = '{\n' + '\n'.join(lines) + '\n' + indent + '}'
-    return result
 
 def format_value(value, depth):
+    indent = '    ' * depth
     if isinstance(value, dict):
-        nested_indent = '    ' * (depth)
-        lines = [f'{nested_indent}{k}: {format_value(v, depth + 1)}' for k, v in value.items()]
-        return '{\n' + '\n'.join(lines) + '\n' + nested_indent + '}'
-    if value is None:
-        return 'null'
-    return str(value).lower() if isinstance(value, bool) else str(value)
+        lines = []
+        for k, v in value.items():
+            lines.append(f"{indent}    {k}: {format_value(v, depth + 1)}")
+        return '{\n' + '\n'.join(lines) + f'\n{indent}}}'
+    if isinstance(value, str):
+        return value
+    return json.dumps(value)
 
+
+def stylish(diff, depth=0):
+    indent = '    ' * depth
+    result = []
+
+    for node in diff['children']:
+        key = node['key']
+        if node['type'] == 'added':
+            result.append(f"{indent}  + {key}: {format_value(node['value'], depth + 1)}")
+        elif node['type'] == 'removed':
+            result.append(f"{indent}  - {key}: {format_value(node['value'], depth + 1)}")
+        elif node['type'] == 'changed':
+            result.append(f"{indent}  - {key}: {format_value(node['old_value'], depth + 1)}")
+            result.append(f"{indent}  + {key}: {format_value(node['new_value'], depth + 1)}")
+        elif node['type'] == 'unchanged':
+            result.append(f"{indent}    {key}: {format_value(node['value'], depth + 1)}")
+        elif node['type'] == 'nested':
+            result.append(f"{indent}    {key}: {{")
+            result.append(stylish(node, depth + 1))
+            result.append(f"{indent}    }}")
+
+    return '\n'.join(result)
+
+
+def format_diff(diff):
+    return '{\n' + stylish(diff) + '\n}'

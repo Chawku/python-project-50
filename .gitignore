@@ -12,3 +12,5 @@ coverage.xml
 *.cast
 venv/
 htmlcov/
+.vscode
+gendiff/scripts/__pycache__/
