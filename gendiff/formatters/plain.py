@@ -6,7 +6,7 @@ def format_value(value):
     if value is None:
         return 'null'
     if isinstance(value, str):
-        return value
+        return f"'{value}'"
     if isinstance(value, (int, float)):
         return str(value)
     return '[complex value]'
