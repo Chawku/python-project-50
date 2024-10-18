@@ -47,4 +47,3 @@ def test_generate_diff_json(json_file1, json_file2):
 }"""
 
     assert generate_diff(json_file1, json_file2, format_of_output='json') == expected_json_output
-
