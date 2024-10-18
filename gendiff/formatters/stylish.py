@@ -1,6 +1,3 @@
-import json
-
-
 def format_value(value, depth):
     indent = '    ' * depth
     if isinstance(value, dict):
@@ -8,9 +5,13 @@ def format_value(value, depth):
         for k, v in value.items():
             lines.append(f"{indent}    {k}: {format_value(v, depth + 1)}")
         return '{\n' + '\n'.join(lines) + f'\n{indent}}}'
-    if isinstance(value, str):
-        return value
-    return json.dumps(value)
+    if isinstance(value, bool):
+        return 'true' if value else 'false'
+    if value is None:
+        return 'null'
+    if isinstance(value, (int, float)):
+        return str(value)
+    return str(value)
 
 
 def stylish(diff, depth=0):
