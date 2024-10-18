@@ -1,4 +1,3 @@
-import pytest
 from gendiff.formatters.plain import format_diff
 
 
