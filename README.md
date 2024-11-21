@@ -15,4 +15,4 @@ Finds differences in files
 
 # Example:
 
-<a href="https://asciinema.org/a/EfYzttY66C6Iz6VdMX7y1yPSf" target="_blank"><img src="https://asciinema.org/a/EfYzttY66C6Iz6VdMX7y1yPSf.svg" /></a>
+[![asciicast](https://asciinema.org/a/EfYzttY66C6Iz6VdMX7y1yPSf.svg)](https://asciinema.org/a/EfYzttY66C6Iz6VdMX7y1yPSf)
