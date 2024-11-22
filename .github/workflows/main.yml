@@ -1,12 +1,8 @@
 name: Python CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -20,19 +16,18 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+        # make depends on poetry
       - name: Install dependencies
         run: |
           pip install poetry
           poetry install
-      - name: Install coverage
-        run: poetry add pytest-cov pytest
-      - name: Run pytest with coverage
-        run: poetry run pytest --cov=hexlet-code --cov-report xml
+      - name: Run linter and pytest
+        run: poetry run pytest
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v8.0.0
+        uses: paambaati/codeclimate-action@v5.0.0
         if: github.ref_name == 'main'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: poetry run pytest --cov=hexlet-code --cov-report xml
+          coverageCommand: poetry run pytest --cov=gendiff --cov-report xml
           debug: true
