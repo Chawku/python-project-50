@@ -6,7 +6,7 @@ def format_value(value, depth):
             lines.append(f"{indent}    {k}: {format_value(v, depth + 1)}")
         return '{\n' + '\n'.join(lines) + f'\n{indent}}}'
     if isinstance(value, bool):
-        return 'true' if value else 'false'
+        return str(value).lower()
     if value is None:
         return 'null'
     if isinstance(value, (int, float)):
