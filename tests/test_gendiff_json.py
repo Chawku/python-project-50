@@ -21,7 +21,7 @@ def load_file_content(fixture_path):
 def test_generate_diff_json(load_file_content):
     file1 = os.path.join("tests", "fixtures", "file1.json")
     file2 = os.path.join("tests", "fixtures", "file2.json")
-    
+
     expected_output = json.loads(load_file_content("expected_output.txt"))
 
     result = json.loads(generate_diff(file1, file2, format_of_output='json'))

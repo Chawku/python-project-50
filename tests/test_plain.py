@@ -21,7 +21,7 @@ def load_file_content(fixture_path):
 def test_format_diff_plain(load_file_content):
     diff_file = os.path.join("tests", "fixtures", "diff.json")
     expected_output = load_file_content("expected_plain_output.txt")
-    
+
     with open(diff_file, 'r') as f:
         diff = json.load(f)
 

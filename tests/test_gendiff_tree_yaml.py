@@ -20,7 +20,7 @@ def load_file_content(fixture_path):
 def test_generate_diff_stylish(load_file_content):
     file1 = os.path.join("tests", "fixtures", "file1_tree.yaml")
     file2 = os.path.join("tests", "fixtures", "file2_tree.yaml")
-    
+
     expected_output = load_file_content("expected_tree_stylish_output.txt")
 
     result = generate_diff(file1, file2, format_of_output='stylish')
