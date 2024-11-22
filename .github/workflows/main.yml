@@ -27,12 +27,12 @@ jobs:
       - name: Install coverage
         run: poetry add coverage
       - name: Run pytest with coverage
-        run: poetry run pytest --cov=hexlet-code --cov-report=xml
+        run: poetry run coverage report
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v8.0.0
         if: github.ref_name == 'main'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: poetry run pytest --cov=hexlet-code --cov-report=xml
+          coverageCommand: poetry run coverage report
           debug: true
