@@ -7,7 +7,7 @@
 
 # Difference Calculator
 
-Finds differences in files
+A command-line application for determining and displaying differences between two data structures. It supports parsing and formatting data in JSON and YAML formats.
 
 # Installation
 
