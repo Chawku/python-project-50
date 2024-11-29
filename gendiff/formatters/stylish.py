@@ -34,8 +34,10 @@ def stylish(diff, depth=0):
             result.append(stylish(node, depth + 1))
             result.append(f"{indent}    }}")
 
+    if depth == 0:
+        return '{\n' + '\n'.join(result) + '\n}'
     return '\n'.join(result)
 
 
 def format_diff(diff):
-    return '{\n' + stylish(diff) + '\n}'
+    return stylish(diff)
