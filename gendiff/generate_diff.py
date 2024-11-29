@@ -1,4 +1,4 @@
-from gendiff.parser import parse_file
+from gendiff.parser import get_parsed_content
 from gendiff.formatters.selector import apply_formatter
 
 
@@ -26,6 +26,6 @@ def build_diff(dict1: dict, dict2: dict) -> dict:
 
 
 def generate_diff(file1, file2, format_of_output='stylish'):
-    dict1, dict2 = parse_file(file1), parse_file(file2)
+    dict1, dict2 = get_parsed_content(file1), get_parsed_content(file2)
     diff = build_diff(dict1, dict2)
     return apply_formatter(diff, format_of_output)
