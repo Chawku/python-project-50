@@ -1,5 +1,5 @@
-from gendiff.parser import get_parsed_content
 from gendiff.formatters.selector import apply_formatter
+from gendiff.parser import get_parsed_content
 
 
 def make_diff(dict1: dict, dict2: dict) -> list:
