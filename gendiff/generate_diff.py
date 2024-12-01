@@ -12,9 +12,11 @@ def make_diff(dict1: dict, dict2: dict) -> list:
         elif key not in dict2:
             result.append({'key': key, 'type': 'removed', 'value': child1})
         elif isinstance(child1, dict) and isinstance(child2, dict):
-            result.append({'key': key, 'type': 'nested', 'children': make_diff(child1, child2)})
+            result.append({'key': key, 'type': 'nested',
+                           'children': make_diff(child1, child2)})
         elif child1 != child2:
-            result.append({'key': key, 'type': 'changed', 'old_value': child1, 'new_value': child2})
+            result.append({'key': key, 'type': 'changed',
+                           'old_value': child1, 'new_value': child2})
         else:
             result.append({'key': key, 'type': 'unchanged', 'value': child1})
 
