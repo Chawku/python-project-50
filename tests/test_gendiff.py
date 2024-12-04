@@ -34,11 +34,13 @@ def get_content(fixture_path, filename):
         ),
     ],
 )
-def test_generate_diff(file1, file2, expected_file, format_of_output, fixture_path):
+def test_generate_diff(file1, file2, expected_file,
+                       format_of_output, fixture_path):
     file1_path = os.path.join(fixture_path, file1)
     file2_path = os.path.join(fixture_path, file2)
     expected_output = get_content(fixture_path, expected_file)
 
-    result = generate_diff(file1_path, file2_path, format_of_output=format_of_output)
+    result = generate_diff(file1_path, file2_path,
+                           format_of_output=format_of_output)
 
     assert ''.join(result.split()) == ''.join(expected_output.split())
